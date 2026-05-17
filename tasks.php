@@ -3,15 +3,7 @@ session_start();
 
 include 'db_config.php'; 
 
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
-
 $uid = $_SESSION['user_id']; 
-
-$pendingRes = mysqli_query($conn, "SELECT * FROM tasks WHERE user_id='$uid' AND status='pending'");
-$pending_tasks = mysqli_num_rows($pendingRes);
 
 class TaskViewer {
 
@@ -22,7 +14,11 @@ class TaskViewer {
     }
 
     public function getTasks($uid) {
-        $query = "SELECT * FROM tasks WHERE user_id='$uid' ORDER BY id DESC";
+
+        $query = "SELECT * FROM tasks
+                  WHERE user_id='$uid'
+                  ORDER BY id DESC";
+
         return mysqli_query($this->conn, $query);
     }
 }
@@ -49,13 +45,6 @@ class TaskViewer {
                     <li class="nav-item"><a href="index.php"><i class="fas fa-home"></i> Dashboard</a></li>
                     <li class="nav-item active"><a href="tasks.php"><i class="fas fa-tasks"></i> My Tasks</a></li>
                     <li class="nav-item"><a href="weekly.php"><i class="fas fa-chart-line"></i> Weekly Progress</a></li>
-                    <li class="nav-item">
-                        <a href="notification.php">
-                            <i class="fas fa-bell"></i> Notifications
-                            <span class="badge" style="<?php echo ($pending_tasks > 0) ? '' : 'display: none;'; ?>"><?php echo $pending_tasks; ?></span>
-                        </a>
-                    </li>
-                    <li class="nav-item logout-item"><a href="logout.php" style="color: #ff8a80;"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                 </ul>
             </nav>
         </aside>
@@ -84,11 +73,12 @@ class TaskViewer {
                             echo '
                             <li class="task-item">
                                 <div class="task-info">
-                                    <input type="checkbox" class="check-task" data-id="'.$row['id'].'" data-status="'.$row['status'].'" '.$status.'>                                    <span class="task-text" style="'.(($row['status'] == 'completed') ? 'text-decoration: line-through; color: #bdbdbd;' : '').'">'.$row['task_text'].'</span>
+                <input type="checkbox" class="check-task" data-id="'.$row['id'].'" data-status="'.$row['status'].'" '.$status.'>
+                                    <span class="task-text">'.$row['task_text'].'</span>
                                 </div>
                                 <div class="actions">
                                     <i class="fas fa-edit edit-icon" data-id="'.$row['id'].'"></i>
-                                    <i class="fas fa-trash delete-icon" data-id="'.$row['id'].'"></i>
+                                   <i class="fas fa-trash delete-icon" data-id="'.$row['id'].'"></i>
                                 </div>
                             </li>';
                         }
@@ -99,10 +89,11 @@ class TaskViewer {
         </main>
     </div>
 
-    <script>
+<script>
 $(document).ready(function(){
 
     $("#add-btn").click(function(){
+
         let taskValue = $("#task-input").val();
 
         if(taskValue == ""){
@@ -117,23 +108,25 @@ $(document).ready(function(){
                 location.reload();
             });
         }
+
     });
 
     $(".delete-icon").click(function(){
-        if (confirm("Are you sure you want to delete this task?")) {
-            let id = $(this).data("id");
+        alert("Are you sure you want to delete this task?");
 
-            $.post("index.php",
-            {
-                delete_id: id
-            },
-            function(data){
-                location.reload();
-            });
-        }
+        let id = $(this).data("id");
+
+        $.post("index.php",
+        {
+            delete_id: id
+        },
+        function(data){
+            location.reload();
+        });
     });
 
     $(".edit-icon").click(function(){
+
         let id = $(this).data("id");
         let newTask = prompt("Edit Task");
 
@@ -147,9 +140,11 @@ $(document).ready(function(){
                 location.reload();
             });
         }
+
     });
 
     $(".check-task").click(function(){
+
         let id = $(this).data("id");
         let status = $(this).data("status");
 
@@ -163,9 +158,10 @@ $(document).ready(function(){
         function(data){
             location.reload();
         });
+
     });
 
 });
-    </script>
+</script>
 </body>
 </html>
