@@ -45,6 +45,11 @@ class TaskViewer {
                     <li class="nav-item"><a href="index.php"><i class="fas fa-home"></i> Dashboard</a></li>
                     <li class="nav-item active"><a href="tasks.php"><i class="fas fa-tasks"></i> My Tasks</a></li>
                     <li class="nav-item"><a href="weekly.php"><i class="fas fa-chart-line"></i> Weekly Progress</a></li>
+                    <li class="nav-item logout-item">
+    <a href="logout.php" style="color: #ff8a80;">
+        <i class="fas fa-sign-out-alt"></i> Logout
+    </a>
+</li>
                 </ul>
             </nav>
         </aside>
