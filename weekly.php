@@ -55,7 +55,6 @@ $statsResult = mysqli_query($conn, "SELECT
                     <li class="nav-item">
                         <a href="notification.php">
                             <i class="fas fa-bell"></i> Notifications
-                            <span class="badge" style="<?php echo ($pending_tasks > 0) ? '' : 'display: none;'; ?>"><?php echo $pending_tasks; ?></span>
                         </a>
                     </li>
                     <li class="nav-item logout-item"><a href="logout.php" style="color: #ff8a80;"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
